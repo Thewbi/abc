@@ -36,8 +36,6 @@ public class Hello {
 
 	public static void main(final String[] args) throws Exception {
 
-		LOG.info("a");
-
 //		final ANTLRInputStream antlrInputStream = new ANTLRInputStream("hello world");
 
 //        HelloLexer lexer = new HelloLexer(antlrInputStream);
