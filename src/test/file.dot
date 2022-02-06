@@ -1,0 +1,132 @@
+graph graphname {
+
+  0[label="root (0)"]
+  0 -- 1;
+  1[label="CompilationUnitContext (1)"]
+  1 -- 2;
+  1 -- 64;
+  2[label="TranslationUnitContext (2)"]
+  2 -- 3;
+  3[label="ExternalDeclarationContext (3)"]
+  3 -- 4;
+  4[label="FunctionDefinitionContext (4)"]
+  4 -- 5;
+  4 -- 9;
+  4 -- 15;
+  5[label="DeclarationSpecifiersContext (5)"]
+  5 -- 6;
+  6[label="DeclarationSpecifierContext (6)"]
+  6 -- 7;
+  7[label="TypeSpecifierContext (7)"]
+  7 -- 8;
+  8[label="int (8)"]
+  9[label="DeclaratorContext (9)"]
+  9 -- 10;
+  10[label="DirectDeclaratorContext (10)"]
+  10 -- 11;
+  10 -- 13;
+  10 -- 14;
+  11[label="DirectDeclaratorContext (11)"]
+  11 -- 12;
+  12[label="main (12)"]
+  13[label="( (13)"]
+  14[label=") (14)"]
+  15[label="CompoundStatementContext (15)"]
+  15 -- 16;
+  15 -- 17;
+  15 -- 63;
+  16[label="{ (16)"]
+  17[label="BlockItemListContext (17)"]
+  17 -- 18;
+  18[label="BlockItemContext (18)"]
+  18 -- 19;
+  19[label="StatementContext (19)"]
+  19 -- 20;
+  20[label="SelectionStatementContext (20)"]
+  20 -- 21;
+  20 -- 22;
+  20 -- 23;
+  20 -- 41;
+  20 -- 42;
+  21[label="if (21)"]
+  22[label="( (22)"]
+  23[label="ExpressionContext (23)"]
+  23 -- 24;
+  24[label="AssignmentExpressionContext (24)"]
+  24 -- 25;
+  25[label="ConditionalExpressionContext (25)"]
+  25 -- 26;
+  26[label="LogicalOrExpressionContext (26)"]
+  26 -- 27;
+  27[label="LogicalAndExpressionContext (27)"]
+  27 -- 28;
+  28[label="InclusiveOrExpressionContext (28)"]
+  28 -- 29;
+  29[label="ExclusiveOrExpressionContext (29)"]
+  29 -- 30;
+  30[label="AndExpressionContext (30)"]
+  30 -- 31;
+  31[label="EqualityExpressionContext (31)"]
+  31 -- 32;
+  32[label="RelationalExpressionContext (32)"]
+  32 -- 33;
+  33[label="ShiftExpressionContext (33)"]
+  33 -- 34;
+  34[label="AdditiveExpressionContext (34)"]
+  34 -- 35;
+  35[label="MultiplicativeExpressionContext (35)"]
+  35 -- 36;
+  36[label="CastExpressionContext (36)"]
+  36 -- 37;
+  37[label="UnaryExpressionContext (37)"]
+  37 -- 38;
+  38[label="PostfixExpressionContext (38)"]
+  38 -- 39;
+  39[label="PrimaryExpressionContext (39)"]
+  39 -- 40;
+  40[label="1 (40)"]
+  41[label=") (41)"]
+  42[label="StatementContext (42)"]
+  42 -- 43;
+  43[label="ExpressionStatementContext (43)"]
+  43 -- 44;
+  43 -- 62;
+  44[label="ExpressionContext (44)"]
+  44 -- 45;
+  45[label="AssignmentExpressionContext (45)"]
+  45 -- 46;
+  46[label="ConditionalExpressionContext (46)"]
+  46 -- 47;
+  47[label="LogicalOrExpressionContext (47)"]
+  47 -- 48;
+  48[label="LogicalAndExpressionContext (48)"]
+  48 -- 49;
+  49[label="InclusiveOrExpressionContext (49)"]
+  49 -- 50;
+  50[label="ExclusiveOrExpressionContext (50)"]
+  50 -- 51;
+  51[label="AndExpressionContext (51)"]
+  51 -- 52;
+  52[label="EqualityExpressionContext (52)"]
+  52 -- 53;
+  53[label="RelationalExpressionContext (53)"]
+  53 -- 54;
+  54[label="ShiftExpressionContext (54)"]
+  54 -- 55;
+  55[label="AdditiveExpressionContext (55)"]
+  55 -- 56;
+  56[label="MultiplicativeExpressionContext (56)"]
+  56 -- 57;
+  57[label="CastExpressionContext (57)"]
+  57 -- 58;
+  58[label="UnaryExpressionContext (58)"]
+  58 -- 59;
+  59[label="PostfixExpressionContext (59)"]
+  59 -- 60;
+  60[label="PrimaryExpressionContext (60)"]
+  60 -- 61;
+  61[label="statement (61)"]
+  62[label="; (62)"]
+  63[label="} (63)"]
+  64[label="<EOF> (64)"]
+}

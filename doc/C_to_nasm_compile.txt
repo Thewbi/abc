@@ -1,0 +1,144 @@
+
+== Compiling 32 bit ==
+
+-- clean
+rm hello32bit_macos.o
+rm hello32bit_macos
+
+-- assemble
+/usr/local/bin/nasm -f macho hello32bit_macos.asm 
+
+-- link
+ld -macosx_version_min 10.7.0 -o hello32bit_macos hello32bit_macos.o  -e start
+
+-- run
+./hello32bit_macos
+
+
+
+
+== Compiling 64 bit ==
+
+-- clean
+rm hello64bit_macos.o
+rm hello64bit_macos
+
+-- assemble
+/usr/local/bin/nasm -f macho64 hello64bit_macos.asm
+/usr/local/bin/nasm -f elf64 hello.asm
+
+-- link
+ld -macosx_version_min 10.7.0 -o hello64bit_macos hello64bit_macos.o  -e start
+
+-- run
+./hello64bit_macos
+
+
+
+
+
+== variables ==
+
+int i;
+
+-> Error: variable name used already in this scope
+-> Error: variable name equals a keyword
+-> Error: unknown data type
+-> Error: value does not match datatype
+
+== printf() ==
+
+int i = 1;
+printf("value: %d", i);
+
+
+
+
+
+= For loops in NASM =
+
+https://forum.nasm.us/index.php?topic=2177.0
+
+There are several ways to implement a for loop.
+There is an explicit 'loop' mnemonic and then you can construct a loop using the 'jnz' mnemonic.
+
+The "loop" instruction is easy. It uses ecx (or cx in 16-bit code):
+
+```
+mov ecx, 10
+top:
+      ; do some stuff
+loop top
+```
+
+ecx is one of the registers that the C library (among other things) is allowed to alter. 
+This has caused many problems for beginners on exactly the program you want to write!
+So you probably want to use some register the C library won't alter...
+
+```
+mov esi, 10
+top:
+      ; do some stuff
+dec esi
+jnz top
+```
+
+As an alternative, you can save ecx around calls to C.
+You can add a push ecx before pushing arguments, then a pop ecx after the add esp removes the function arguments.
+
+
+
+
+
+
+= How to compile a for loop from C =
+
+```
+for (initializationStatement; testExpression; updateStatement)
+{
+    // statements inside the body of loop
+}
+```
+
+The execution is:
+1. The initialization statement is executed only once.
+2. Then, the test expression is evaluated. 
+   If the test expression is evaluated to false, the for loop is terminated.
+3. However, if the test expression is evaluated to true, 
+   statements inside the body of the for loop are executed.
+4. The update expression is executed.
+5. Back to 2.
+
+The issue is that a for loop encloses statements in it's body.
+
+Once the body has been executed, a branch at the bottom either has to jump
+back to the start of the loop where the testExpression is evaluated again.
+
+Whenever code has to be generated before and after other code,
+a element is pushed on a stack.
+
+The for loop line is parsed to retrieve the
+
+- initializationStatement
+- testExpression
+- updateStatement
+
+The push-handler for the FOR_LOOP type registered with the stack
+The pop-handler for the FOR_LOOP type registered with the stack
+A stack element of type FOR_LOOP is created.
+The initializationStatement; testExpression; updateStatement are stored into the FOR_LOOP stack element
+The stack element is pushed on to the stack.
+The push-handler for the FOR_LOOP type is executed because it's type has been pushed
+The push-handler for the FOR_LOOP type generates the code that goes before the body
+The code for the body is generated
+The stack element for the FOR_LOOP type is popped
+The pop-handler for the FOR_LOOP type is executed because it's type has been popped
+The pop-handler for the FOR_LOOP type generates the code that goes after the body.
+
+
+
+
+
+= function calls =
+
+https://www.eventhelix.com/embedded/c-to-assembly-translation/
