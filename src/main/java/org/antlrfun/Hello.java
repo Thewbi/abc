@@ -36,8 +36,6 @@ public class Hello {
 
 	public static void main(final String[] args) throws Exception {
 
-//		final ANTLRInputStream antlrInputStream = new ANTLRInputStream("hello world");
-
 //        HelloLexer lexer = new HelloLexer(antlrInputStream);
 //
 //        CommonTokenStream tokens = new CommonTokenStream( lexer );
@@ -46,14 +44,14 @@ public class Hello {
 //        ParseTreeWalker walker = new ParseTreeWalker();
 //        walker.walk( new HelloWalker(), tree );
 
-//		final String fileName = "src/test/resources/helloworld.c";
+		final String fileName = "src/test/resources/helloworld.c";
 //		final String fileName = "src/test/resources/array.c";
 //		final String fileName = "src/test/resources/arrays.c";
 //		final String fileName = "src/test/resources/loop.c";
 //		final String fileName = "src/test/resources/forloop.c";
 //		final String fileName = "src/test/resources/expression.c";
 //		final String fileName = "src/test/resources/variables.c";
-		final String fileName = "src/test/resources/ifelse.c";
+//		final String fileName = "src/test/resources/ifelse.c";
 
 //		final String fileName = "src/test/resources/ALINK.C";
 //		final String fileName = "src/test/resources/ALINK.H";
@@ -87,34 +85,31 @@ public class Hello {
 			bufferedWriter.write("global start\n" + "\n" + "section .text\n" + "start:");
 
 			// Create a CharStream that reads from standard input
-			final ANTLRInputStream antlrInputStream = new ANTLRInputStream(fileInputStream);
+//			final ANTLRInputStream antlrInputStream = new ANTLRInputStream("hello world");
+//			final ANTLRInputStream antlrInputStream = new ANTLRInputStream("#include <stdio.h>\n");
+//			final ANTLRInputStream antlrInputStream = new ANTLRInputStream(
+//					"#include <stdio.h>\ntypedef unsigned char BYTE;\n");
 //			final ANTLRInputStream antlrInputStream = new ANTLRInputStream("int main() { return 0; }");
 //			final ANTLRInputStream antlrInputStream = new ANTLRInputStream("return 0;");
 
-			final CLexer lexer = new CLexer(antlrInputStream);
+			final ANTLRInputStream antlrInputStream = new ANTLRInputStream(fileInputStream);
 
+			final CLexer lexer = new CLexer(antlrInputStream);
 			final CommonTokenStream tokens = new CommonTokenStream(lexer);
 			final CParser parser = new CParser(tokens);
-
 			final ParseTree tree = parser.compilationUnit();
 
-			final IdService idService = new IdService();
+			outputDotFile(tree, "src/test/file.dot");
 
-			final DefaultNodeFactory nodeFactory = new DefaultNodeFactory();
-			nodeFactory.setIdService(idService);
+//			final FunctionDefinitionRuleHandler functionDefinitionhandler = new FunctionDefinitionRuleHandler(
+//					bufferedWriter);
+//			final StatementRuleHandler statementRuleHandler = new StatementRuleHandler(bufferedWriter);
+//			final JumpStatementRuleHandler jumpStatementRuleHandler = new JumpStatementRuleHandler(bufferedWriter);
 
-			final Node rootNode = convertASTToNodeTree(nodeFactory, tree);
-			debugOutputDotFileForNodeTree(rootNode);
-
-			final FunctionDefinitionRuleHandler functionDefinitionhandler = new FunctionDefinitionRuleHandler(
-					bufferedWriter);
-			final StatementRuleHandler statementRuleHandler = new StatementRuleHandler(bufferedWriter);
-			final JumpStatementRuleHandler jumpStatementRuleHandler = new JumpStatementRuleHandler(bufferedWriter);
-
-			final CWalker cWalker = new CWalker(bufferedWriter);
-			cWalker.getRuleHandlers().put(CParser.FunctionDefinitionContext.class, functionDefinitionhandler);
-			cWalker.getRuleHandlers().put(CParser.StatementContext.class, statementRuleHandler);
-			cWalker.getRuleHandlers().put(CParser.JumpStatementContext.class, jumpStatementRuleHandler);
+//			final CWalker cWalker = new CWalker(bufferedWriter);
+//			cWalker.getRuleHandlers().put(CParser.FunctionDefinitionContext.class, functionDefinitionhandler);
+//			cWalker.getRuleHandlers().put(CParser.StatementContext.class, statementRuleHandler);
+//			cWalker.getRuleHandlers().put(CParser.JumpStatementContext.class, jumpStatementRuleHandler);
 
 //			final ParseTreeWalker walker = new ParseTreeWalker();
 //			walker.walk(cWalker, tree);
@@ -156,6 +151,23 @@ public class Hello {
 
 	}
 
+	public static void outputDotFile(final ParseTree tree, final String filename) throws Exception {
+
+		LOG.info("Outputting DOT file to : \"" + filename + "\"");
+
+		final IdService idService = new IdService();
+
+		final DefaultNodeFactory nodeFactory = new DefaultNodeFactory();
+		nodeFactory.setIdService(idService);
+
+		final Node rootNode = convertASTToNodeTree(nodeFactory, tree);
+		debugOutputDotFileForNodeTree(rootNode, filename);
+	}
+
+	private static void debugOutputDotFileForNodeTree(final Node rootNode, final String filename) throws Exception {
+		TreeWalkingTools.dumpDot(rootNode, filename);
+	}
+
 	private static Node convertASTToNodeTree(final Factory<DefaultNode> nodeFactory, final ParseTree context)
 			throws Exception {
 
@@ -172,8 +184,4 @@ public class Hello {
 		return rootNode;
 	}
 
-	private static void debugOutputDotFileForNodeTree(final Node rootNode) throws Exception {
-
-		TreeWalkingTools.dumpDot(rootNode, "src/test/file.dot");
-	}
 }

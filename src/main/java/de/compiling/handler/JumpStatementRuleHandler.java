@@ -11,7 +11,7 @@ import org.antlrfun.CWalker;
 import org.cgrammar.CParser;
 import org.cgrammar.CParser.JumpStatementContext;
 
-public class JumpStatementRuleHandler implements RuleHandler<CParser.JumpStatementContext> {
+public class JumpStatementRuleHandler extends AbstractRuleHandler<CParser.JumpStatementContext> {
 
 	final BufferedWriter bufferedWriter;
 

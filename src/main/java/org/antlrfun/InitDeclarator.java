@@ -15,6 +15,8 @@ public class InitDeclarator {
 
 	private Expression expression;
 
+	private final List<Expression> expressionList = new ArrayList<>();
+
 	public String getStorageClassSpecifier() {
 		return storageClassSpecifier;
 	}
@@ -55,10 +57,15 @@ public class InitDeclarator {
 		this.expression = expression;
 	}
 
+	public List<Expression> getExpressionList() {
+		return expressionList;
+	}
+
 	@Override
 	public String toString() {
 		return "InitDeclarator [storageClassSpecifier=" + storageClassSpecifier + ", name=" + name + ", value=" + value
-				+ ", valueList=" + valueList + ", expression=" + expression + "]";
+				+ ", valueList=" + valueList + ", expression=" + expression + ", expressionList=" + expressionList
+				+ "]";
 	}
 
 }

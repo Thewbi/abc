@@ -1,6 +1,7 @@
 package de.compiling.handler;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -13,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.cgrammar.CParser;
 import org.cgrammar.CParser.InitDeclaratorContext;
 
-public class InitDeclaratorRuleHandler implements RuleHandler<CParser.InitDeclaratorContext> {
+public class InitDeclaratorRuleHandler extends AbstractRuleHandler<CParser.InitDeclaratorContext> {
 
 	private static final Logger LOG = LogManager.getLogger(InitDeclaratorRuleHandler.class);
 
@@ -39,21 +40,27 @@ public class InitDeclaratorRuleHandler implements RuleHandler<CParser.InitDeclar
 			final NodeWalker nodeWalker = new NodeWalker();
 			nodeWalker.setName("?");
 
-			final EqualityExpressionRuleHandler equalityExpressionRuleHandler = new EqualityExpressionRuleHandler();
+			final EqualityExpressionRuleHandler equalityExpressionRuleHandler = getHandlerFactory()
+					.createEqualityExpressionRuleHandler();
 			nodeWalker.getRuleHandlers().put(CParser.EqualityExpressionContext.class, equalityExpressionRuleHandler);
 
 			nodeWalker.walk(child2, 0);
 
-			final Expression expression = nodeWalker.getExpressionList().get(0);
+//			final Expression expression = nodeWalker.getExpressionList().get(0);
+//			LOG.info("VarName: " + varName + " is initialized with: " + expression);
 
-			LOG.info("VarName: " + varName + " is initialized with: " + expression);
+			final List<Expression> expressionList = nodeWalker.getExpressionList();
+			final Expression expression = expressionList.get(0);
+			LOG.info("VarName: " + varName + " is initialized with: " + expressionList);
 
 			// send data to parent
 			astWalker.getExpressionList().add(expression);
 
 			initDeclarator.setExpression(expression);
-			astWalker.getInitDeclarators().add(initDeclarator);
+			initDeclarator.getExpressionList().addAll(expressionList);
 		}
+
+		astWalker.getInitDeclarators().add(initDeclarator);
 	}
 
 	@Override

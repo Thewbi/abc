@@ -16,7 +16,7 @@ int main() {
    //printf("Hello, Turd");
    //test(1, 2, 3);
    
-   int a;
+   //int a;
    //unsigned int a;
    //char a;
    //float a;

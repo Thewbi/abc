@@ -8,19 +8,23 @@ import java.util.Map;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlrfun.ASTWalker;
 import org.antlrfun.InitDeclarator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cgrammar.CParser;
 import org.cgrammar.CParser.DeclarationSpecifiersContext;
 import org.cgrammar.CParser.StorageClassSpecifierContext;
 import org.cgrammar.CParser.TypeSpecifierContext;
 import org.cgrammar.CParser.TypedefNameContext;
 
-public class DeclarationSpecifiersRuleHandler implements RuleHandler<CParser.DeclarationSpecifiersContext> {
+public class DeclarationSpecifiersRuleHandler extends AbstractRuleHandler<CParser.DeclarationSpecifiersContext> {
+
+	private static final Logger LOG = LogManager.getLogger(DeclarationSpecifiersRuleHandler.class);
 
 	@Override
 	public void processEnter(final DeclarationSpecifiersContext ctx, final Map<String, Object> properties,
 			final ASTWalker astWalker) throws IOException {
 
-		System.out.println(ctx.getText());
+		LOG.info(ctx.getText());
 
 		final InitDeclarator initDeclarator = new InitDeclarator();
 
@@ -45,7 +49,15 @@ public class DeclarationSpecifiersRuleHandler implements RuleHandler<CParser.Dec
 			}
 		}
 
-		System.out.println(initDeclarator);
+		LOG.info(initDeclarator);
+
+		// The DeclarationSpecifiers rule handler will not put data into the current
+		// scope! It passes the data up to the declaration rule handler instead which
+		// inserts
+		// the declaration into the current scope! The declaration rule handler will
+		// insert the declaration for
+		// both variable declarations with and without initialization
+//		getScopeController().getCurrentScope().addInitDeclaration(initDeclarator);
 
 		astWalker.getInitDeclarators().add(initDeclarator);
 	}

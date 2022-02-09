@@ -51,4 +51,14 @@ public interface RuleHandler<T extends ParserRuleContext> {
 		}
 	}
 
+	public static int lineNumber() {
+		return Thread.currentThread().getStackTrace()[2].getLineNumber();
+	}
+
+	public static String at() {
+		final StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
+		final String where = ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + " ";
+		return where;
+	}
+
 }

@@ -13,7 +13,7 @@ import org.cgrammar.CParser;
 import org.cgrammar.CParser.AdditiveExpressionContext;
 import org.cgrammar.CParser.MultiplicativeExpressionContext;
 
-public class AdditiveExpressionRuleHandler implements RuleHandler<CParser.AdditiveExpressionContext> {
+public class AdditiveExpressionRuleHandler extends AbstractRuleHandler<CParser.AdditiveExpressionContext> {
 
 	private static final Logger LOG = LogManager.getLogger(AdditiveExpressionRuleHandler.class);
 
@@ -30,7 +30,8 @@ public class AdditiveExpressionRuleHandler implements RuleHandler<CParser.Additi
 //		nodeWalker.getRuleHandlers().put(CParser.StatementContext.class, statementRuleHandler);
 //		nodeWalker.getRuleHandlers().put(CParser.JumpStatementContext.class, jumpStatementRuleHandler);
 
-		final PrimaryExpressionRuleHandler primaryExpressionRuleHandler = new PrimaryExpressionRuleHandler();
+		final PrimaryExpressionRuleHandler primaryExpressionRuleHandler = getHandlerFactory()
+				.createPrimaryExpressionRuleHandler();
 		nodeWalker.getRuleHandlers().put(CParser.PrimaryExpressionContext.class, primaryExpressionRuleHandler);
 
 		for (int i = 0; i < ctx.getChildCount(); i++) {

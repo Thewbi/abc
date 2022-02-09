@@ -20,7 +20,7 @@ import org.cgrammar.CParser.DeclarationContext;
 import org.cgrammar.CParser.DeclarationSpecifiersContext;
 import org.cgrammar.CParser.RelationalExpressionContext;
 
-public class DeclarationRuleHandler implements RuleHandler<CParser.DeclarationContext> {
+public class DeclarationRuleHandler extends AbstractRuleHandler<CParser.DeclarationContext> {
 
 	private static final Logger LOG = LogManager.getLogger(DeclarationRuleHandler.class);
 
@@ -31,15 +31,17 @@ public class DeclarationRuleHandler implements RuleHandler<CParser.DeclarationCo
 		LOG.info("Declaration: " + ctx.getText());
 
 		final NodeWalker nodeWalker = new NodeWalker();
-		nodeWalker.setName("DECL");
+		nodeWalker.setName(RuleHandler.at());
 
-		final DeclarationSpecifiersRuleHandler declarationSpecifiersRuleHandler = new DeclarationSpecifiersRuleHandler();
+		final DeclarationSpecifiersRuleHandler declarationSpecifiersRuleHandler = getHandlerFactory()
+				.createDeclarationSpecifiersRuleHandler();
 		nodeWalker.getRuleHandlers().put(CParser.DeclarationSpecifiersContext.class, declarationSpecifiersRuleHandler);
 
 //		final InitDeclaratorRuleHandler initDeclaratorRuleHandler = new InitDeclaratorRuleHandler();
 //		nodeWalker.getRuleHandlers().put(CParser.InitDeclaratorContext.class, initDeclaratorRuleHandler);
 
-		final InitDeclaratorListRuleHandler initDeclaratorListRuleHandler = new InitDeclaratorListRuleHandler();
+		final InitDeclaratorListRuleHandler initDeclaratorListRuleHandler = getHandlerFactory()
+				.createInitDeclaratorListRuleHandler();
 		nodeWalker.getRuleHandlers().put(CParser.InitDeclaratorListContext.class, initDeclaratorListRuleHandler);
 
 		for (int i = 0; i < ctx.getChildCount(); i++) {
@@ -64,26 +66,42 @@ public class DeclarationRuleHandler implements RuleHandler<CParser.DeclarationCo
 		}
 
 		// first initDeclarator contains the type
-		final InitDeclarator initDeclarator0 = nodeWalker.getInitDeclarators().get(0);
-		initDeclarator0.setName(nodeWalker.getVariableName());
+		final InitDeclarator typeInitDeclarator = nodeWalker.getInitDeclarators().get(0);
+
+		// TODO: this erases the name "BYTE" of "typedef unsigned char BYTE;"
+//		typeInitDeclarator.setName(nodeWalker.getVariableName());
 
 		if (CollectionUtils.isNotEmpty(nodeWalker.getExpressionList())) {
-			initDeclarator0.setValue(nodeWalker.getExpressionList().get(0).getRhs());
+			typeInitDeclarator.setValue(nodeWalker.getExpressionList().get(0).getRhs());
 		}
 
-		// combine the type from the first initDeclarator with the rest of the
-		// initDeclarators
-		// which are added for each variable
-		for (int i = 1; i < nodeWalker.getInitDeclarators().size(); i++) {
+		if (nodeWalker.getInitDeclarators().size() == 1) {
 
-			final InitDeclarator initDeclarator = nodeWalker.getInitDeclarators().get(i);
-			initDeclarator.getValueList().addAll(initDeclarator0.getValueList());
+			// put data into the current scope
+			getScopeController().getCurrentScope().getInitDeclarators().add(typeInitDeclarator);
 
-			LOG.info(initDeclarator);
+		} else if (nodeWalker.getInitDeclarators().size() > 1) {
 
-			// TODO: generate code for this
-			astWalker.getInitDeclarators().add(initDeclarator);
+			// combine the type from the first initDeclarator with the rest of the
+			// initDeclarators which are added for each variable
+			for (int i = 1; i < nodeWalker.getInitDeclarators().size(); i++) {
+
+				final InitDeclarator initDeclarator = nodeWalker.getInitDeclarators().get(i);
+				initDeclarator.getValueList().addAll(typeInitDeclarator.getValueList());
+
+				LOG.info(initDeclarator);
+
+				// put data into the current scope
+				getScopeController().getCurrentScope().addInitDeclaration(initDeclarator);
+
+				// TODO: generate code for this
+				astWalker.getInitDeclarators().add(initDeclarator);
+			}
+
+			nodeWalker.getInitDeclarators().remove(typeInitDeclarator);
 		}
+
+//		}
 
 //		final List<InitDeclarator> initDeclarators = new ArrayList<>();
 //

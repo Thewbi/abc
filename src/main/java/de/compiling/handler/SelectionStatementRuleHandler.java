@@ -14,7 +14,7 @@ import org.cgrammar.CParser.SelectionStatementContext;
  * if statements
  *
  */
-public class SelectionStatementRuleHandler implements RuleHandler<CParser.SelectionStatementContext> {
+public class SelectionStatementRuleHandler extends AbstractRuleHandler<CParser.SelectionStatementContext> {
 
 	@Override
 	public void processEnter(final SelectionStatementContext ctx, final Map<String, Object> properties,
@@ -23,13 +23,14 @@ public class SelectionStatementRuleHandler implements RuleHandler<CParser.Select
 		System.out.println(ctx.getText());
 
 		final NodeWalker nodeWalker = new NodeWalker();
-		nodeWalker.setName("IF");
+		nodeWalker.setName(RuleHandler.at());
 //		nodeWalker.getRuleHandlers().put(CParser.SelectionStatementContext.class, selectionStatementRuleHandler);
 //		nodeWalker.getRuleHandlers().put(CParser.FunctionDefinitionContext.class, functionDefinitionhandler);
 //		nodeWalker.getRuleHandlers().put(CParser.StatementContext.class, statementRuleHandler);
 //		nodeWalker.getRuleHandlers().put(CParser.JumpStatementContext.class, jumpStatementRuleHandler);
 
-		final EqualityExpressionRuleHandler equalityExpressionRuleHandler = new EqualityExpressionRuleHandler();
+		final EqualityExpressionRuleHandler equalityExpressionRuleHandler = getHandlerFactory()
+				.createEqualityExpressionRuleHandler();
 		nodeWalker.getRuleHandlers().put(CParser.EqualityExpressionContext.class, equalityExpressionRuleHandler);
 
 //		final AdditiveExpressionRuleHandler additiveExpressionRuleHandler = new AdditiveExpressionRuleHandler();
@@ -38,11 +39,11 @@ public class SelectionStatementRuleHandler implements RuleHandler<CParser.Select
 //		final PrimaryExpressionRuleHandler primaryExpressionRuleHandler = new PrimaryExpressionRuleHandler();
 //		nodeWalker.getRuleHandlers().put(CParser.PrimaryExpressionContext.class, primaryExpressionRuleHandler);
 
-		// TODO: descend into the condition expression
+		// TODO: descend into the condition expression -- add scope
 		nodeWalker.walk(ctx.getChild(2), 0);
 		System.out.println("CONDITION: " + nodeWalker.getExpressionList());
 
-		// TODO: descend into the statement expression
+		// TODO: descend into the statement expression -- add scope
 		nodeWalker.getExpressionList().clear();
 		nodeWalker.walk(ctx.getChild(4), 0);
 		System.out.println("BODY: " + nodeWalker.getExpressionList());

@@ -9,7 +9,7 @@ import org.antlrfun.CWalker;
 import org.apache.commons.lang3.StringUtils;
 import org.cgrammar.CParser;
 
-public class FunctionDefinitionRuleHandler implements RuleHandler<CParser.FunctionDefinitionContext> {
+public class FunctionDefinitionRuleHandler extends AbstractRuleHandler<CParser.FunctionDefinitionContext> {
 
 	final BufferedWriter bufferedWriter;
 

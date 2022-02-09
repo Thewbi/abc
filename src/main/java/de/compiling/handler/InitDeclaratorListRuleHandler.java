@@ -15,7 +15,7 @@ import org.cgrammar.CParser;
 import org.cgrammar.CParser.InitDeclaratorContext;
 import org.cgrammar.CParser.InitDeclaratorListContext;
 
-public class InitDeclaratorListRuleHandler implements RuleHandler<CParser.InitDeclaratorListContext> {
+public class InitDeclaratorListRuleHandler extends AbstractRuleHandler<CParser.InitDeclaratorListContext> {
 
 	private static final Logger LOG = LogManager.getLogger(InitDeclaratorListRuleHandler.class);
 
@@ -24,9 +24,11 @@ public class InitDeclaratorListRuleHandler implements RuleHandler<CParser.InitDe
 			final ASTWalker astWalker) throws IOException {
 
 		final NodeWalker nodeWalker = new NodeWalker();
-		nodeWalker.setName("?");
+//		nodeWalker.setName("?" + ":" + RuleHandler.lineNumber());
+		nodeWalker.setName(RuleHandler.at());
 
-		final InitDeclaratorRuleHandler initDeclaratorRuleHandler = new InitDeclaratorRuleHandler();
+		final InitDeclaratorRuleHandler initDeclaratorRuleHandler = getHandlerFactory()
+				.createInitDeclaratorRuleHandler();
 		nodeWalker.getRuleHandlers().put(CParser.InitDeclaratorContext.class, initDeclaratorRuleHandler);
 
 		for (int i = 0; i < ctx.getChildCount(); i++) {
@@ -34,27 +36,23 @@ public class InitDeclaratorListRuleHandler implements RuleHandler<CParser.InitDe
 			final ParseTree child = ctx.getChild(i);
 
 			if (child instanceof InitDeclaratorContext) {
+
 				nodeWalker.walk(child, 0);
 
-//				final InitDeclarator initDeclarator = nodeWalker.getInitDeclarators().get(0);
+				// for which test is this here?
+//				final InitDeclarator initDeclarator = new InitDeclarator();
+//				initDeclarator.setName(nodeWalker.getVariableName());
+//				if (CollectionUtils.isNotEmpty(nodeWalker.getExpressionList())) {
+//					final Expression expression = nodeWalker.getExpressionList().get(0);
+//					initDeclarator.setExpression(expression);
+//				}
 //				astWalker.getInitDeclarators().add(initDeclarator);
 
-				final InitDeclarator initDeclarator = new InitDeclarator();
-
-				initDeclarator.setName(nodeWalker.getVariableName());
-
-				if (CollectionUtils.isNotEmpty(nodeWalker.getExpressionList())) {
-					final Expression expression = nodeWalker.getExpressionList().get(0);
-					initDeclarator.setExpression(expression);
-				}
-
-				astWalker.getInitDeclarators().add(initDeclarator);
+				astWalker.getInitDeclarators().addAll(nodeWalker.getInitDeclarators());
 			}
 
 			nodeWalker.getInitDeclarators().clear();
-
 		}
-
 	}
 
 	@Override
