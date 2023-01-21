@@ -8,7 +8,7 @@ public class ASTNodeUtils {
 		// no instances of this class
 	}
 
-	public static ParseTree lookForChild(final ParseTree parseTree, final Class clazz) {
+	public static ParseTree lookForChild(final ParseTree parseTree, final Class<?> clazz) {
 
 		if (parseTree.getClass().equals(clazz)) {
 			return parseTree;

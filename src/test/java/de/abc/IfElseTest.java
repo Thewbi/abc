@@ -56,7 +56,7 @@ public class IfElseTest extends AbstractParsingTest {
 
 		// Act
 
-		parseTestData(testData, scopeController, "src/test/test_WhenIf_NoElse_SimpleCondition_DummyStatement.dot");
+		parseTestData(testData/*, scopeController*/, "src/test/test_WhenIf_NoElse_SimpleCondition_DummyStatement.dot");
 
 		// Assert
 
@@ -90,7 +90,7 @@ public class IfElseTest extends AbstractParsingTest {
 
 		// Act
 
-		parseTestData(testData, scopeController, "src/test/test_WhenIf_NoElse_EqualityCondition_WithStatement.dot");
+		parseTestData(testData/*, scopeController*/, "src/test/test_WhenIf_NoElse_EqualityCondition_WithStatement.dot");
 
 		// Assert
 

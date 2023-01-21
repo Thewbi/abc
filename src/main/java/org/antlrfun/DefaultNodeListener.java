@@ -1,8 +1,6 @@
 package org.antlrfun;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.cgrammar.CBaseListener;
 
@@ -29,14 +27,14 @@ public class DefaultNodeListener extends CBaseListener {
 	 * The default implementation does nothing.
 	 */
 	@Override
-	public void enterEveryRule(@NotNull final ParserRuleContext ctx) {
+	public void enterEveryRule(final ParserRuleContext ctx) {
 //		final Node newChildNode = enter(ctx.getClass().getSimpleName(), 0);
 		final Node newChildNode = enter(ctx);
 		decend(newChildNode);
 	}
 
 	@Override
-	public void visitTerminal(@NotNull final TerminalNode node) {
+	public void visitTerminal(final TerminalNode node) {
 		try {
 			final DefaultNode childNode = createNode();
 			childNode.setLabel(node.getText());
@@ -54,7 +52,7 @@ public class DefaultNodeListener extends CBaseListener {
 	 * The default implementation does nothing.
 	 */
 	@Override
-	public void exitEveryRule(@NotNull final ParserRuleContext ctx) {
+	public void exitEveryRule(final ParserRuleContext ctx) {
 		ascend();
 	}
 

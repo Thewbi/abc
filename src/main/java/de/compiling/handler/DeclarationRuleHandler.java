@@ -1,15 +1,10 @@
 package de.compiling.handler;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.antlrfun.ASTWalker;
-import org.antlrfun.CWalker;
-import org.antlrfun.Expression;
 import org.antlrfun.InitDeclarator;
 import org.antlrfun.NodeWalker;
 import org.apache.commons.collections4.CollectionUtils;
@@ -17,8 +12,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cgrammar.CParser;
 import org.cgrammar.CParser.DeclarationContext;
-import org.cgrammar.CParser.DeclarationSpecifiersContext;
-import org.cgrammar.CParser.RelationalExpressionContext;
 
 public class DeclarationRuleHandler extends AbstractRuleHandler<CParser.DeclarationContext> {
 
@@ -30,19 +23,7 @@ public class DeclarationRuleHandler extends AbstractRuleHandler<CParser.Declarat
 
 		LOG.info("Declaration: " + ctx.getText());
 
-		final NodeWalker nodeWalker = new NodeWalker();
-		nodeWalker.setName(RuleHandler.at());
-
-		final DeclarationSpecifiersRuleHandler declarationSpecifiersRuleHandler = getHandlerFactory()
-				.createDeclarationSpecifiersRuleHandler();
-		nodeWalker.getRuleHandlers().put(CParser.DeclarationSpecifiersContext.class, declarationSpecifiersRuleHandler);
-
-//		final InitDeclaratorRuleHandler initDeclaratorRuleHandler = new InitDeclaratorRuleHandler();
-//		nodeWalker.getRuleHandlers().put(CParser.InitDeclaratorContext.class, initDeclaratorRuleHandler);
-
-		final InitDeclaratorListRuleHandler initDeclaratorListRuleHandler = getHandlerFactory()
-				.createInitDeclaratorListRuleHandler();
-		nodeWalker.getRuleHandlers().put(CParser.InitDeclaratorListContext.class, initDeclaratorListRuleHandler);
+		final NodeWalker nodeWalker = createNodeWalker();
 
 		for (int i = 0; i < ctx.getChildCount(); i++) {
 
@@ -117,6 +98,25 @@ public class DeclarationRuleHandler extends AbstractRuleHandler<CParser.Declarat
 //
 //			LOG.info("");
 //		}
+	}
+
+	private NodeWalker createNodeWalker() {
+		
+		final NodeWalker nodeWalker = new NodeWalker();
+		nodeWalker.setName(RuleHandler.at());
+
+		final DeclarationSpecifiersRuleHandler declarationSpecifiersRuleHandler = getHandlerFactory()
+				.createDeclarationSpecifiersRuleHandler();
+		nodeWalker.getRuleHandlers().put(CParser.DeclarationSpecifiersContext.class, declarationSpecifiersRuleHandler);
+
+//		final InitDeclaratorRuleHandler initDeclaratorRuleHandler = new InitDeclaratorRuleHandler();
+//		nodeWalker.getRuleHandlers().put(CParser.InitDeclaratorContext.class, initDeclaratorRuleHandler);
+
+		final InitDeclaratorListRuleHandler initDeclaratorListRuleHandler = getHandlerFactory()
+				.createInitDeclaratorListRuleHandler();
+		nodeWalker.getRuleHandlers().put(CParser.InitDeclaratorListContext.class, initDeclaratorListRuleHandler);
+		
+		return nodeWalker;
 	}
 
 	@Override

@@ -2,32 +2,16 @@ package de.abc;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlrfun.Expression;
-import org.antlrfun.Hello;
 import org.antlrfun.InitDeclarator;
-import org.antlrfun.NodeWalker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.cgrammar.CLexer;
-import org.cgrammar.CParser;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.abc.scopes.DefaultScopeController;
 import de.abc.scopes.Scope;
-import de.abc.scopes.ScopeController;
-import de.compiling.handler.DeclarationRuleHandler;
-import de.compiling.handler.DeclarationSpecifiersRuleHandler;
 import de.compiling.handler.DefaultHandlerFactory;
-import de.compiling.handler.HandlerFactory;
-import de.compiling.handler.RuleHandler;
-import de.compiling.handler.SelectionStatementRuleHandler;
 
 public class TypeDefinitionTest extends AbstractParsingTest {
 
@@ -51,7 +35,7 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Act
 
-		parseTestData(testData, scopeController, "src/test/testTypeDefinition_WhenTypedefUnsignedCharBYTE.dot");
+		parseTestData(testData/*, scopeController*/, "src/test/testTypeDefinition_WhenTypedefUnsignedCharBYTE.dot");
 
 		// Assert
 
@@ -77,7 +61,7 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Act
 
-		parseTestData(testData, scopeController,
+		parseTestData(testData/*, scopeController*/,
 				"src/test/testTypeDefinition_WhenVarDefinitionWithoutInitialization.dot");
 
 		// Assert
@@ -101,7 +85,7 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Act
 
-		parseTestData(testData, scopeController, "src/test/testTypeDefinition_WhenVarDefinitionWithInitialization.dot");
+		parseTestData(testData/*, scopeController*/, "src/test/testTypeDefinition_WhenVarDefinitionWithInitialization.dot");
 
 		// Assert
 
@@ -124,7 +108,7 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Act
 
-		parseTestData(testData, scopeController,
+		parseTestData(testData/*, scopeController*/,
 				"src/test/testTypeDefinition_WhenVarDefinitionWithoutInitialization_Unsigned.dot");
 
 		// Assert
@@ -149,7 +133,7 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Act
 
-		parseTestData(testData, scopeController,
+		parseTestData(testData/*, scopeController*/,
 				"src/test/testTypeDefinition_WhenVarDefinitionWithoutInitialization_Multiple.dot");
 
 		// Assert
@@ -186,7 +170,7 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Act
 
-		parseTestData(testData, scopeController,
+		parseTestData(testData/*, scopeController*/,
 				"src/test/testTypeDefinition_WhenVarDefinitionWithInitialization_Multiple.dot");
 
 		// Assert
@@ -229,7 +213,7 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Act
 
-		parseTestData(testData, scopeController,
+		parseTestData(testData/*, scopeController*/,
 				"src/test/testTypeDefinition_WhenVarDefinitionWithInitialization_ByFunction.dot");
 
 		// Assert

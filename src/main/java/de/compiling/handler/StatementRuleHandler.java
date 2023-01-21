@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.antlrfun.ASTWalker;
 import org.antlrfun.Argument;
-import org.antlrfun.CWalker;
 import org.antlrfun.Data;
 import org.apache.commons.collections4.CollectionUtils;
 import org.cgrammar.CParser;
@@ -32,6 +31,7 @@ public class StatementRuleHandler implements RuleHandler<CParser.StatementContex
 	public void processExit(final StatementContext ctx, final Map<String, Object> properties, final ASTWalker astWalker)
 			throws IOException {
 
+		@SuppressWarnings("unchecked")
 		final List<Argument> arguments = (List<Argument>) properties.get("args");
 		if (CollectionUtils.isEmpty(arguments)) {
 			return;
@@ -40,8 +40,6 @@ public class StatementRuleHandler implements RuleHandler<CParser.StatementContex
 		final String firstArgument = arguments.get(0).getValue();
 
 		if (firstArgument.equals("printf")) {
-
-			final String functionName = firstArgument;
 
 			// prepare data so it can be output into the data section later
 			final Data data = new Data();

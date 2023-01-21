@@ -7,6 +7,8 @@ import org.antlrfun.InitDeclarator;
 public interface Scope {
 
 	Scope getParentScope();
+	
+	void setParentScope(Scope parentScope);
 
 	boolean hasParentScope();
 

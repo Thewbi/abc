@@ -442,7 +442,6 @@ public class NodeUtil {
 	 * @param node     the node
 	 * @param filename the filename
 	 */
-	@SuppressWarnings("PMD")
 	public static void dumpDot(final Node node, final String filename) {
 
 		final StringBuffer stringBuffer = new StringBuffer();

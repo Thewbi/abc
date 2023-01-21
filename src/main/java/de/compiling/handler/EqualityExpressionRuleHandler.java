@@ -27,6 +27,7 @@ public class EqualityExpressionRuleHandler extends AbstractRuleHandler<CParser.E
 		final NodeWalker nodeWalker = new NodeWalker();
 		nodeWalker.setName("EQ");
 
+		// use an AdditiveExpressionRuleHandler because ??? why ???
 		final AdditiveExpressionRuleHandler additiveExpressionRuleHandler = getHandlerFactory()
 				.createAdditiveExpressionRuleHandler();
 		nodeWalker.getRuleHandlers().put(CParser.AdditiveExpressionContext.class, additiveExpressionRuleHandler);

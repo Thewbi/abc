@@ -3,35 +3,30 @@ package org.antlrfun;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cgrammar.CLexer;
 import org.cgrammar.CParser;
 
 import de.abc.scopes.DefaultScopeController;
-import de.abc.scopes.ScopeController;
 import de.common.DefaultNode;
 import de.common.DefaultNodeFactory;
 import de.common.Factory;
 import de.common.IdService;
 import de.common.Node;
-import de.common.NodeFactory;
 import de.compiling.handler.DeclarationRuleHandler;
-import de.compiling.handler.DeclarationSpecifiersRuleHandler;
 import de.compiling.handler.DefaultHandlerFactory;
-import de.compiling.handler.FunctionDefinitionRuleHandler;
-import de.compiling.handler.JumpStatementRuleHandler;
-import de.compiling.handler.RuleHandler;
 import de.compiling.handler.SelectionStatementRuleHandler;
-import de.compiling.handler.StatementRuleHandler;
 
 public class Hello {
 
@@ -95,7 +90,8 @@ public class Hello {
 //			final ANTLRInputStream antlrInputStream = new ANTLRInputStream("int main() { return 0; }");
 //			final ANTLRInputStream antlrInputStream = new ANTLRInputStream("return 0;");
 
-			final ANTLRInputStream antlrInputStream = new ANTLRInputStream(fileInputStream);
+//			final ANTLRInputStream antlrInputStream = new ANTLRInputStream(fileInputStream);
+			CharStream antlrInputStream = CharStreams.fromStream(fileInputStream);
 
 			final CLexer lexer = new CLexer(antlrInputStream);
 			final CommonTokenStream tokens = new CommonTokenStream(lexer);

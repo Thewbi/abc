@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.antlrfun.Expression;
 
+import de.abc.exceptions.ScopeException;
+
 /**
  * This class is informed about language constructs that the walkers have
  * identified inside the AST. It is called backend, because I think that code
@@ -11,6 +13,6 @@ import org.antlrfun.Expression;
  */
 public interface Backend {
 
-	void ifStatement(List<Expression> condition, List<Expression> statementBody);
+	void ifStatement(List<Expression> condition, List<Expression> statementBody) throws ScopeException;
 
 }

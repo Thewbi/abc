@@ -10,7 +10,6 @@ import java.util.Stack;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.collections4.CollectionUtils;
@@ -19,30 +18,24 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cgrammar.CBaseListener;
 import org.cgrammar.CParser;
-import org.cgrammar.CParser.AssignmentExpressionContext;
-import org.cgrammar.CParser.AssignmentOperatorContext;
-import org.cgrammar.CParser.DeclarationSpecifierContext;
-import org.cgrammar.CParser.DeclarationSpecifiersContext;
-import org.cgrammar.CParser.DeclaratorContext;
-import org.cgrammar.CParser.InitDeclaratorContext;
-import org.cgrammar.CParser.InitializerContext;
 import org.cgrammar.CParser.TypedefNameContext;
 
+import de.abc.exceptions.ScopeException;
 import de.compiling.handler.RuleHandler;
 
 public class CWalker extends CBaseListener implements ASTWalker {
 
 	private static final Logger LOG = LogManager.getLogger(CWalker.class);
 
-	private static final int IDENTIFIER_TOKEN_TYPE = 105;
-
-	private static final int CONSTANT_TOKEN_TYPE = 106;
-
-	private static final int STRING_LITERAL_TOKEN_TYPE = 108;
+//	private static final int IDENTIFIER_TOKEN_TYPE = 105;
+//
+//	private static final int CONSTANT_TOKEN_TYPE = 106;
+//
+//	private static final int STRING_LITERAL_TOKEN_TYPE = 108;
 
 	private final Stack<String> declaractionName = new Stack<String>();
 
-	private final Map<Class<?>, RuleHandler> ruleHandlers = new HashMap<>();
+	private final Map<Class<?>, RuleHandler<?>> ruleHandlers = new HashMap<>();
 
 	private final List<Argument> argumentList = new ArrayList<>();
 
@@ -68,7 +61,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	 */
 	private List<String> initializerList;
 
-	private String typedefName;
+//	private String typedefName;
 
 	private int arrayDimensions = -1;
 
@@ -98,7 +91,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	 * The default implementation does nothing.
 	 */
 	@Override
-	public void enterEveryRule(@NotNull final ParserRuleContext ctx) {
+	public void enterEveryRule(final ParserRuleContext ctx) {
 //		System.out.println("Enter: " + ctx.getText());
 	}
 
@@ -108,7 +101,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	 * The default implementation does nothing.
 	 */
 	@Override
-	public void exitEveryRule(@NotNull final ParserRuleContext ctx) {
+	public void exitEveryRule(final ParserRuleContext ctx) {
 //		System.out.println("Exit: " + ctx.getClass() + " " + ctx.getText());
 	}
 
@@ -118,7 +111,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	 * The default implementation does nothing.
 	 */
 	@Override
-	public void exitSelectionStatement(@NotNull final CParser.SelectionStatementContext ctx) {
+	public void exitSelectionStatement(final CParser.SelectionStatementContext ctx) {
 
 		LOG.info("Selection: " + ctx.getText());
 
@@ -134,7 +127,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void exitAssignmentExpression(@NotNull final CParser.AssignmentExpressionContext ctx) {
+	public void exitAssignmentExpression(final CParser.AssignmentExpressionContext ctx) {
 
 		LOG.info("AssignmentExpression: " + ctx.getText());
 
@@ -161,7 +154,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	 * The default implementation does nothing.
 	 */
 	@Override
-	public void exitEqualityExpression(@NotNull final CParser.EqualityExpressionContext ctx) {
+	public void exitEqualityExpression(final CParser.EqualityExpressionContext ctx) {
 
 		LOG.info("exitEqualityExpression: " + ctx.getText() + " ChildCount: " + ctx.getChildCount());
 
@@ -180,7 +173,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void exitExpression(@NotNull final CParser.ExpressionContext ctx) {
+	public void exitExpression(final CParser.ExpressionContext ctx) {
 
 	}
 
@@ -188,7 +181,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	 * detects printf
 	 */
 	@Override
-	public void exitPrimaryExpression(@NotNull final CParser.PrimaryExpressionContext ctx) {
+	public void exitPrimaryExpression(final CParser.PrimaryExpressionContext ctx) {
 
 		final Token startToken = ctx.getStart();
 
@@ -228,7 +221,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void exitAdditiveExpression(@NotNull final CParser.AdditiveExpressionContext ctx) {
+	public void exitAdditiveExpression(final CParser.AdditiveExpressionContext ctx) {
 //		expressionStack.push("+");
 
 		// TODO: generate assembler statements that perform the mathematical operation
@@ -261,7 +254,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void exitMultiplicativeExpression(@NotNull final CParser.MultiplicativeExpressionContext ctx) {
+	public void exitMultiplicativeExpression(final CParser.MultiplicativeExpressionContext ctx) {
 
 		final StringBuilder stringBuilder = new StringBuilder();
 
@@ -320,8 +313,8 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void visitTerminal(@NotNull final TerminalNode node) {
-		final String text = node.getText();
+	public void visitTerminal(final TerminalNode node) {
+//		final String text = node.getText();
 
 //		if (text.equalsIgnoreCase("+")) {
 //			expressionStack.push("+");
@@ -335,7 +328,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void exitAssignmentOperator(@NotNull final CParser.AssignmentOperatorContext ctx) {
+	public void exitAssignmentOperator(final CParser.AssignmentOperatorContext ctx) {
 
 		LOG.info(ctx.getText());
 //		expressionStack.push("=");
@@ -349,7 +342,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	 * The default implementation does nothing.
 	 */
 	@Override
-	public void enterFunctionDefinition(@NotNull final CParser.FunctionDefinitionContext ctx) {
+	public void enterFunctionDefinition(final CParser.FunctionDefinitionContext ctx) {
 
 		// save the type of the function in it's own typeSpecifier list, so it is not
 		// overriden until exitFunctionDefinition()
@@ -381,7 +374,8 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	 * The default implementation does nothing.
 	 */
 	@Override
-	public void exitFunctionDefinition(@NotNull final CParser.FunctionDefinitionContext ctx) {
+	public void exitFunctionDefinition(final CParser.FunctionDefinitionContext ctx) {
+		
 		final RuleHandler ruleHandler = ruleHandlers.get(ctx.getClass());
 
 		final Map<String, String> properties = new HashMap<>();
@@ -394,8 +388,9 @@ public class CWalker extends CBaseListener implements ASTWalker {
 			// call the handler so it can generated code
 			try {
 				ruleHandler.processExit(ctx, properties, this);
-			} catch (final IOException e) {
-				e.printStackTrace();
+			} catch (IOException | ScopeException e) {
+				LOG.error(e.getMessage(), e);
+				System.exit(-1);
 			}
 		}
 
@@ -408,7 +403,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	 * declared so that name can be used in the exitFunctionDefinition() call.
 	 */
 	@Override
-	public void exitDirectDeclarator(@NotNull final CParser.DirectDeclaratorContext ctx) {
+	public void exitDirectDeclarator(final CParser.DirectDeclaratorContext ctx) {
 
 		if (ctx.getChildCount() == 1) {
 
@@ -437,7 +432,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void exitDeclaration(@NotNull final CParser.DeclarationContext ctx) {
+	public void exitDeclaration(final CParser.DeclarationContext ctx) {
 
 		for (final InitDeclarator initDeclarator : initDeclarators) {
 
@@ -461,7 +456,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void enterCompoundStatement(@NotNull final CParser.CompoundStatementContext ctx) {
+	public void enterCompoundStatement(final CParser.CompoundStatementContext ctx) {
 
 		// here add a new typeSpecifier list for the variables inside the current
 		// function
@@ -471,12 +466,12 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void exitCompoundStatement(@NotNull final CParser.CompoundStatementContext ctx) {
+	public void exitCompoundStatement(final CParser.CompoundStatementContext ctx) {
 		typeSpecifier = typeSpecifierStack.pop();
 	}
 
 	@Override
-	public void exitStorageClassSpecifier(@NotNull final CParser.StorageClassSpecifierContext ctx) {
+	public void exitStorageClassSpecifier(final CParser.StorageClassSpecifierContext ctx) {
 
 //		System.out.println(ctx.getText());
 		storageClassSpecifier = ctx.getText();
@@ -510,7 +505,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	 *
 	 */
 	@Override
-	public void exitInitDeclarator(@NotNull final CParser.InitDeclaratorContext ctx) {
+	public void exitInitDeclarator(final CParser.InitDeclaratorContext ctx) {
 
 		LOG.info("InitDeclarator: " + ctx.getText());
 
@@ -552,7 +547,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void exitTypedefName(@NotNull final CParser.TypedefNameContext ctx) {
+	public void exitTypedefName(final CParser.TypedefNameContext ctx) {
 
 		final InitDeclarator initDeclarator = new InitDeclarator();
 		initDeclarators.add(initDeclarator);
@@ -564,14 +559,14 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void enterInitializer(@NotNull final CParser.InitializerContext ctx) {
+	public void enterInitializer(final CParser.InitializerContext ctx) {
 		if (ctx.getStart().getText().equals("{")) {
 			initializerList = new ArrayList<>();
 		}
 	}
 
 	@Override
-	public void exitInitializer(@NotNull final CParser.InitializerContext ctx) {
+	public void exitInitializer(final CParser.InitializerContext ctx) {
 //		System.out.println("Initializer: " + ctx.getText());
 
 		initializer = ctx.getText();
@@ -595,12 +590,12 @@ public class CWalker extends CBaseListener implements ASTWalker {
 //	 * detects "Hello, World!"
 //	 */
 //	@Override
-//	public void exitUnaryExpression(@NotNull final CParser.UnaryExpressionContext ctx) {
+//	public void exitUnaryExpression(final CParser.UnaryExpressionContext ctx) {
 //		System.out.println("" + ctx.getText());
 //	}
 
 	@Override
-	public void exitArgumentExpressionList(@NotNull final CParser.ArgumentExpressionListContext ctx) {
+	public void exitArgumentExpressionList(final CParser.ArgumentExpressionListContext ctx) {
 //		System.out.println("ArgumentExpressionList: " + ctx.getText());
 //
 //		final Token start = ctx.getStart();
@@ -611,10 +606,10 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void exitStatement(@NotNull final CParser.StatementContext ctx) {
+	public void exitStatement(final CParser.StatementContext ctx) {
 //		System.out.println("exitStatement: " + ctx.getText());
 
-		final String firstToken = ctx.getStart().getText();
+//		final String firstToken = ctx.getStart().getText();
 //		System.out.println("firstToken: " + firstToken);
 //		System.out.println("argumentList: " + argumentList);
 
@@ -629,8 +624,9 @@ public class CWalker extends CBaseListener implements ASTWalker {
 		} else {
 			try {
 				ruleHandler.processExit(ctx, properties, this);
-			} catch (final IOException e) {
-				e.printStackTrace();
+			} catch (IOException | ScopeException e) {
+				LOG.error(e.getMessage(), e);
+				System.exit(-1);
 			}
 		}
 
@@ -639,7 +635,8 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	}
 
 	@Override
-	public void exitJumpStatement(@NotNull final CParser.JumpStatementContext ctx) {
+	public void exitJumpStatement(final CParser.JumpStatementContext ctx) {
+		
 		final Map<String, Object> properties = new HashMap<>();
 
 		// the declaration name was stored in exitDirectDeclarator()
@@ -650,8 +647,9 @@ public class CWalker extends CBaseListener implements ASTWalker {
 		final RuleHandler ruleHandler = ruleHandlers.get(ctx.getClass());
 		try {
 			ruleHandler.processExit(ctx, properties, this);
-		} catch (final IOException e) {
-			e.printStackTrace();
+		} catch (IOException | ScopeException e) {
+			LOG.error(e.getMessage(), e);
+			System.exit(-1);
 		}
 
 		// reset
@@ -662,14 +660,15 @@ public class CWalker extends CBaseListener implements ASTWalker {
 	 * int
 	 */
 	@Override
-	public void exitDeclarationSpecifier(@NotNull final CParser.DeclarationSpecifierContext ctx) {
+	public void exitDeclarationSpecifier(final CParser.DeclarationSpecifierContext ctx) {
 	}
 
 	/**
 	 * int i
 	 */
 	@Override
-	public void exitTypeSpecifier(@NotNull final CParser.TypeSpecifierContext ctx) {
+	public void exitTypeSpecifier(final CParser.TypeSpecifierContext ctx) {
+		
 		final TypedefNameContext typedefName = ctx.typedefName();
 		if (typedefName != null) {
 			declaractionName.push(typedefName.getText());
@@ -678,7 +677,7 @@ public class CWalker extends CBaseListener implements ASTWalker {
 		}
 	}
 
-	public Map<Class<?>, RuleHandler> getRuleHandlers() {
+	public Map<Class<?>, RuleHandler<?>> getRuleHandlers() {
 		return ruleHandlers;
 	}
 

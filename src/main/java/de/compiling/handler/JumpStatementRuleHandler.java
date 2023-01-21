@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.antlrfun.ASTWalker;
 import org.antlrfun.Argument;
-import org.antlrfun.CWalker;
 import org.cgrammar.CParser;
 import org.cgrammar.CParser.JumpStatementContext;
 
@@ -29,10 +28,10 @@ public class JumpStatementRuleHandler extends AbstractRuleHandler<CParser.JumpSt
 	@Override
 	public void processExit(final JumpStatementContext ctx, final Map<String, Object> properties,
 			final ASTWalker astWalker) throws IOException {
-//		System.out.println("return");
 
 		final String jumpType = (String) properties.get("type");
 
+		@SuppressWarnings("unchecked")
 		final List<Argument> arguments = (List<Argument>) properties.get("args");
 		final String returnValue = arguments.get(0).getValue();
 

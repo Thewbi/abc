@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.antlrfun.ASTWalker;
-import org.antlrfun.CWalker;
 import org.apache.commons.lang3.StringUtils;
 import org.cgrammar.CParser;
 

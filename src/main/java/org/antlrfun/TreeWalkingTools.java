@@ -1,32 +1,26 @@
 package org.antlrfun;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import de.common.Node;
-
 /**
  * The Class TreeWalkingTools.
  */
-@SuppressWarnings({ "PMD.ExcessiveClassLength", "PMD.ExcessivePublicCount" })
+//@SuppressWarnings({ "PMD.ExcessiveClassLength", "PMD.ExcessivePublicCount" })
 public final class TreeWalkingTools extends NodeUtil {
 
-	private static final int SIZE_TWO = 2;
-
-	private static final int SIZE_THREE = 3;
-
-	private static final int SIZE_ONE = 1;
-
-	private static final int SPLIT_LENGTH_ONE = 1;
-
-	private static final String OPENING_BRACKET = "(";
-
-	private static final String ONE_SPACE_EMPTY_STRING = " ";
+//	private static final int SIZE_TWO = 2;
+//
+//	private static final int SIZE_THREE = 3;
+//
+//	private static final int SIZE_ONE = 1;
+//
+//	private static final int SPLIT_LENGTH_ONE = 1;
+//
+//	private static final String OPENING_BRACKET = "(";
+//
+//	private static final String ONE_SPACE_EMPTY_STRING = " ";
 
 	public static final String ASTERISK = "*";
 
-	private static boolean outputAllTablesIsInsideSubSelect = false; // NOPMD
+//	private static boolean outputAllTablesIsInsideSubSelect = false; // NOPMD
 
 	/** The Constant LOG. */
 //  private static final transient Logger LOG = LoggerFactory.getLogger(TreeWalkingTools.class);

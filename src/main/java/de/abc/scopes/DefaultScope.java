@@ -15,6 +15,11 @@ public class DefaultScope implements Scope {
 	public Scope getParentScope() {
 		return parentScope;
 	}
+	
+	@Override
+	public void setParentScope(Scope parentScope) {
+		this.parentScope = parentScope;
+	}
 
 	@Override
 	public boolean hasParentScope() {
@@ -40,5 +45,7 @@ public class DefaultScope implements Scope {
 	public void addInitDeclaration(final InitDeclarator initDeclarator) {
 		initDeclarators.add(initDeclarator);
 	}
+
+	
 
 }

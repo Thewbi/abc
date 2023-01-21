@@ -5,10 +5,7 @@ import java.util.Map;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlrfun.ASTWalker;
-import org.antlrfun.Expression;
-import org.antlrfun.InitDeclarator;
 import org.antlrfun.NodeWalker;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cgrammar.CParser;
@@ -17,6 +14,7 @@ import org.cgrammar.CParser.InitDeclaratorListContext;
 
 public class InitDeclaratorListRuleHandler extends AbstractRuleHandler<CParser.InitDeclaratorListContext> {
 
+	@SuppressWarnings("unused")
 	private static final Logger LOG = LogManager.getLogger(InitDeclaratorListRuleHandler.class);
 
 	@Override
