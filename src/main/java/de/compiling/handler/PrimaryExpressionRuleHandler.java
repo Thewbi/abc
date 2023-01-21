@@ -18,19 +18,17 @@ public class PrimaryExpressionRuleHandler extends AbstractRuleHandler<CParser.Pr
 	public void processEnter(final PrimaryExpressionContext ctx, final Map<String, Object> properties,
 			final ASTWalker astWalker) throws IOException {
 
-		LOG.info("PrimaryExpressionRuleHandler: " + ctx.getText());
+		LOG.trace("PrimaryExpressionRuleHandler: " + ctx.getText());
 
 		final Expression expression = new Expression();
 		expression.setRhs(ctx.getText());
 
-//		astWalker.setExpression(expression);
 		astWalker.getExpressionList().add(expression);
 	}
 
 	@Override
 	public void processExit(final PrimaryExpressionContext ctx, final Map<String, Object> properties,
 			final ASTWalker ASTWalker) throws IOException {
-		// TODO Auto-generated method stub
 
 	}
 

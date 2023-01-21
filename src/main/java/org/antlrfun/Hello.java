@@ -16,6 +16,8 @@ import org.apache.logging.log4j.Logger;
 import org.cgrammar.CLexer;
 import org.cgrammar.CParser;
 
+import de.abc.scopes.DefaultScopeController;
+import de.abc.scopes.ScopeController;
 import de.common.DefaultNode;
 import de.common.DefaultNodeFactory;
 import de.common.Factory;
@@ -24,6 +26,7 @@ import de.common.Node;
 import de.common.NodeFactory;
 import de.compiling.handler.DeclarationRuleHandler;
 import de.compiling.handler.DeclarationSpecifiersRuleHandler;
+import de.compiling.handler.DefaultHandlerFactory;
 import de.compiling.handler.FunctionDefinitionRuleHandler;
 import de.compiling.handler.JumpStatementRuleHandler;
 import de.compiling.handler.RuleHandler;
@@ -116,9 +119,15 @@ public class Hello {
 //
 //			cWalker.outputDataSection();
 
-			final SelectionStatementRuleHandler selectionStatementRuleHandler = new SelectionStatementRuleHandler();
+			final DefaultScopeController scopeController = new DefaultScopeController();
+
+			final DefaultHandlerFactory handlerFactory = new DefaultHandlerFactory();
+			handlerFactory.setScopeController(scopeController);
+
+			final SelectionStatementRuleHandler selectionStatementRuleHandler = handlerFactory
+					.createSelectionStatementRuleHandler();
 //			final DeclarationSpecifiersRuleHandler declarationSpecifiersRuleHandler = new DeclarationSpecifiersRuleHandler();
-			final DeclarationRuleHandler declarationRuleHandler = new DeclarationRuleHandler();
+			final DeclarationRuleHandler declarationRuleHandler = handlerFactory.createDeclarationRuleHandler();
 
 			final NodeWalker nodeWalker = new NodeWalker();
 			nodeWalker.setName("main");

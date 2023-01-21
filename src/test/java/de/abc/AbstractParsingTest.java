@@ -9,12 +9,19 @@ import org.cgrammar.CLexer;
 import org.cgrammar.CParser;
 
 import de.abc.scopes.DefaultScopeController;
+import de.backend.DummyBackend;
 import de.compiling.handler.DeclarationRuleHandler;
 import de.compiling.handler.DefaultHandlerFactory;
 import de.compiling.handler.RuleHandler;
 import de.compiling.handler.SelectionStatementRuleHandler;
 
 public abstract class AbstractParsingTest {
+
+	protected DefaultScopeController scopeController;
+
+	protected DefaultHandlerFactory handlerFactory;
+
+	protected DummyBackend backend;
 
 	public void parseTestData(final String testData, final DefaultScopeController scopeController,
 			final String dotFileName) throws Exception {
@@ -39,9 +46,6 @@ public abstract class AbstractParsingTest {
 		//
 		// process
 		//
-
-		final DefaultHandlerFactory handlerFactory = new DefaultHandlerFactory();
-		handlerFactory.setScopeController(scopeController);
 
 		final NodeWalker nodeWalker = new NodeWalker();
 		nodeWalker.setName(RuleHandler.at());

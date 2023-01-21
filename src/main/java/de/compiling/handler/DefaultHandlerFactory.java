@@ -1,10 +1,13 @@
 package de.compiling.handler;
 
 import de.abc.scopes.ScopeController;
+import de.backend.Backend;
 
 public class DefaultHandlerFactory implements HandlerFactory {
 
 	private ScopeController scopeController;
+
+	private Backend backend;
 
 	@Override
 	public SelectionStatementRuleHandler createSelectionStatementRuleHandler() {
@@ -12,6 +15,7 @@ public class DefaultHandlerFactory implements HandlerFactory {
 		final SelectionStatementRuleHandler selectionStatementRuleHandler = new SelectionStatementRuleHandler();
 		selectionStatementRuleHandler.setScopeController(scopeController);
 		selectionStatementRuleHandler.setHandlerFactory(this);
+		selectionStatementRuleHandler.setBackend(backend);
 
 		return selectionStatementRuleHandler;
 	}
@@ -22,6 +26,7 @@ public class DefaultHandlerFactory implements HandlerFactory {
 		final DeclarationSpecifiersRuleHandler declarationSpecifiersRuleHandler = new DeclarationSpecifiersRuleHandler();
 		declarationSpecifiersRuleHandler.setScopeController(scopeController);
 		declarationSpecifiersRuleHandler.setHandlerFactory(this);
+		declarationSpecifiersRuleHandler.setBackend(backend);
 
 		return declarationSpecifiersRuleHandler;
 	}
@@ -32,6 +37,7 @@ public class DefaultHandlerFactory implements HandlerFactory {
 		final InitDeclaratorRuleHandler initDeclaratorRuleHandler = new InitDeclaratorRuleHandler();
 		initDeclaratorRuleHandler.setScopeController(scopeController);
 		initDeclaratorRuleHandler.setHandlerFactory(this);
+		initDeclaratorRuleHandler.setBackend(backend);
 
 		return initDeclaratorRuleHandler;
 	}
@@ -42,6 +48,7 @@ public class DefaultHandlerFactory implements HandlerFactory {
 		final EqualityExpressionRuleHandler equalityExpressionRuleHandler = new EqualityExpressionRuleHandler();
 		equalityExpressionRuleHandler.setScopeController(scopeController);
 		equalityExpressionRuleHandler.setHandlerFactory(this);
+		equalityExpressionRuleHandler.setBackend(backend);
 
 		return equalityExpressionRuleHandler;
 	}
@@ -52,6 +59,7 @@ public class DefaultHandlerFactory implements HandlerFactory {
 		final InitDeclaratorListRuleHandler initDeclaratorListRuleHandler = new InitDeclaratorListRuleHandler();
 		initDeclaratorListRuleHandler.setScopeController(scopeController);
 		initDeclaratorListRuleHandler.setHandlerFactory(this);
+		initDeclaratorListRuleHandler.setBackend(backend);
 
 		return initDeclaratorListRuleHandler;
 	}
@@ -62,6 +70,7 @@ public class DefaultHandlerFactory implements HandlerFactory {
 		final PrimaryExpressionRuleHandler primaryExpressionRuleHandler = new PrimaryExpressionRuleHandler();
 		primaryExpressionRuleHandler.setScopeController(scopeController);
 		primaryExpressionRuleHandler.setHandlerFactory(this);
+		primaryExpressionRuleHandler.setBackend(backend);
 
 		return primaryExpressionRuleHandler;
 	}
@@ -71,6 +80,7 @@ public class DefaultHandlerFactory implements HandlerFactory {
 		final DeclarationRuleHandler declarationRuleHandler = new DeclarationRuleHandler();
 		declarationRuleHandler.setScopeController(scopeController);
 		declarationRuleHandler.setHandlerFactory(this);
+		declarationRuleHandler.setBackend(backend);
 
 		return declarationRuleHandler;
 	}
@@ -81,6 +91,7 @@ public class DefaultHandlerFactory implements HandlerFactory {
 		final AdditiveExpressionRuleHandler additiveExpressionRuleHandler = new AdditiveExpressionRuleHandler();
 		additiveExpressionRuleHandler.setScopeController(scopeController);
 		additiveExpressionRuleHandler.setHandlerFactory(this);
+		additiveExpressionRuleHandler.setBackend(backend);
 
 		return additiveExpressionRuleHandler;
 	}
@@ -91,6 +102,14 @@ public class DefaultHandlerFactory implements HandlerFactory {
 
 	public void setScopeController(final ScopeController scopeController) {
 		this.scopeController = scopeController;
+	}
+
+	public Backend getBackend() {
+		return backend;
+	}
+
+	public void setBackend(final Backend backend) {
+		this.backend = backend;
 	}
 
 }

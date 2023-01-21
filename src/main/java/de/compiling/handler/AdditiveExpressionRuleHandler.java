@@ -21,14 +21,10 @@ public class AdditiveExpressionRuleHandler extends AbstractRuleHandler<CParser.A
 	public void processEnter(final AdditiveExpressionContext ctx, final Map<String, Object> properties,
 			final ASTWalker astWalker) throws IOException {
 
-		LOG.info("AdditiveExpressionRuleHandler: " + ctx.getText());
+		LOG.trace("AdditiveExpressionRuleHandler: " + ctx.getText());
 
 		final NodeWalker nodeWalker = new NodeWalker();
 		nodeWalker.setName("ADDITIVE");
-//		nodeWalker.getRuleHandlers().put(CParser.SelectionStatementContext.class, selectionStatementRuleHandler);
-//		nodeWalker.getRuleHandlers().put(CParser.FunctionDefinitionContext.class, functionDefinitionhandler);
-//		nodeWalker.getRuleHandlers().put(CParser.StatementContext.class, statementRuleHandler);
-//		nodeWalker.getRuleHandlers().put(CParser.JumpStatementContext.class, jumpStatementRuleHandler);
 
 		final PrimaryExpressionRuleHandler primaryExpressionRuleHandler = getHandlerFactory()
 				.createPrimaryExpressionRuleHandler();
@@ -43,7 +39,7 @@ public class AdditiveExpressionRuleHandler extends AbstractRuleHandler<CParser.A
 				nodeWalker.walk(child, 0);
 
 			} else {
-				LOG.info(child.getText());
+				LOG.trace(child.getText());
 
 				final Expression mathematicalOperatorExpression = new Expression();
 				mathematicalOperatorExpression.setOperator(child.getText());
@@ -51,17 +47,15 @@ public class AdditiveExpressionRuleHandler extends AbstractRuleHandler<CParser.A
 			}
 		}
 
-		LOG.info("+ " + nodeWalker.getExpressionList());
+		LOG.trace("+ " + nodeWalker.getExpressionList());
 
 		// parent data up into parent
-//		astWalker.getExpressionList().clear();
 		astWalker.getExpressionList().addAll(nodeWalker.getExpressionList());
 	}
 
 	@Override
 	public void processExit(final AdditiveExpressionContext ctx, final Map<String, Object> properties,
 			final ASTWalker astWalker) throws IOException {
-		// TODO Auto-generated method stub
 
 	}
 

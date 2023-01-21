@@ -33,12 +33,20 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 	private static final Logger LOG = LogManager.getLogger(TypeDefinitionTest.class);
 
+	@Before
+	public void before() {
+
+		scopeController = new DefaultScopeController();
+
+		handlerFactory = new DefaultHandlerFactory();
+		handlerFactory.setScopeController(scopeController);
+	}
+
 	@Test
 	public void testTypeDefinition_WhenTypedefUnsignedCharBYTE() throws Exception {
 
 		// Arrange
 
-		final DefaultScopeController scopeController = new DefaultScopeController();
 		final String testData = "#include <stdio.h>\n typedef unsigned char BYTE;\n\n";
 
 		// Act
@@ -65,7 +73,6 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Arrange
 
-		final DefaultScopeController scopeController = new DefaultScopeController();
 		final String testData = "#include <stdio.h>\n int global_a;\n\n";
 
 		// Act
@@ -90,7 +97,6 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Arrange
 
-		final DefaultScopeController scopeController = new DefaultScopeController();
 		final String testData = "#include <stdio.h>\n int global_a = 1;\n\n";
 
 		// Act
@@ -114,7 +120,6 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Arrange
 
-		final DefaultScopeController scopeController = new DefaultScopeController();
 		final String testData = "#include <stdio.h>\n unsigned int a;\n\n";
 
 		// Act
@@ -140,7 +145,6 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Arrange
 
-		final DefaultScopeController scopeController = new DefaultScopeController();
 		final String testData = "#include <stdio.h>\n unsigned int i, j, k;\n\n";
 
 		// Act
@@ -178,7 +182,6 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Arrange
 
-		final DefaultScopeController scopeController = new DefaultScopeController();
 		final String testData = "#include <stdio.h>\n unsigned int i=1, j=2, k=3;\n\n";
 
 		// Act
@@ -222,7 +225,6 @@ public class TypeDefinitionTest extends AbstractParsingTest {
 
 		// Arrange
 
-		final DefaultScopeController scopeController = new DefaultScopeController();
 		final String testData = "#include <stdio.h>\n int a = func();\n\n";
 
 		// Act
